@@ -12,13 +12,13 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode('/', $uri);
 
 if ($uri[1] == 'api') {
-	if (!in_array($uri[2], ['supervisor', 'submit'])) {
+	if (!in_array($uri[2], ['supervisors', 'submit'])) {
 		header("HTTP/1.1 404 Not Found");
 		exit();
 	}
 }
 
-$requestMethod = $_SERER["REQUEST_METHOD"];
+$requestMethod = $_SERVER["REQUEST_METHOD"];
 
 $controller = new Controller($requestMethod);
 $controller->processRequest();
