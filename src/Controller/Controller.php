@@ -11,10 +11,10 @@ class Controller {
 	public function processRequest() {
 		switch ($this->requestMethod) {
 			case 'GET':
-				// TODO
+				$response = $this->getSupervisors();
 				break;
 			case 'POST':
-				// TODO
+				$response = $this->submit();
 				break;
 			default:
 				$response = $this->notFoundResponse();
@@ -28,16 +28,35 @@ class Controller {
 	}
 
 	public function getSupervisors() {
-		// GET supervisors from https://609aae2c0f5a13001721bb02.mockapi.io/lightfeather/managers
+		$result = file_get_contents('https://609aae2c0f5a13001721bb02.mockapi.io/lightfeather/managers');
+
+		$response['status_code_header'] = 'HTTP/1.1 200 OK';
+		$response['body'] = json_decode($result);
+
+		return $response;
 	}
 
-	public function postInfo() {
-		// accept POST request here
+	public function submit() {
+		$input = [
+			'first_name' => $_POST['first_name'],
+			'last_name' => $_POST['last_name'],
+			'email' => $_POST['email'],
+			'phone' => $_POST['phone'],
+			'supervisor' => $_POST['supervisor']
+		];
+
+		$response['status_code_header'] = 'HTTP/1.1 201 Created';
+		$response['body'] = null;
+
+		// log to console
+		\Src\Utils::console_log($input);
+
+		return $response;
 	}
 
 	public function notFoundResponse() {
-		$reqponse['status_code_header'] = 'HTTP/1.1 404 Not Found'
+		$response['status_code_header'] = 'HTTP/1.1 404 Not Found';
 		$response['body'] = null;
 		return $response;
-	}
+;	}
 }
